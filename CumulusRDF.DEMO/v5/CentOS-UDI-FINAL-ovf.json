@@ -31,6 +31,14 @@
 	 },
 	 {
   			"type": "shell",
+  			"inline": ["yum --nogpgcheck localinstall cloudera-cdh-5-0.x86_64.rpm"]
+	 },
+	 {
+  			"type": "shell",
+  			"inline": ["yum install hbase hbase-rest hbase-thrift"]
+	 },
+	 {
+  			"type": "shell",
   			"inline": ["yum install mc -y"]
 	 },
 	 {
