@@ -44,6 +44,10 @@
 	 {
   			"type": "shell",
   			"inline": ["/home/cumulus/cumulus-rdf-readonly/src/vm/bootstrap.sh"]
+	 },	 
+	 { 
+  			"type": "shell",
+  			"inline": ["svn checkout https://github.com/kamir/Humulus /home/cumulus/humulus"]
 	 }	 	 
 	 ]	 
 }
