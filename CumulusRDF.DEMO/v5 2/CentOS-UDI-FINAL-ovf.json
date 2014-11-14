@@ -1,0 +1,45 @@
+{
+    "builders": [
+        {
+            "boot_wait": "5s",
+            "headless": false,
+            "ssh_password": "root",
+            "ssh_username": "root",
+            "ssh_wait_timeout": "30m",
+            "type": "virtualbox-ovf",
+            "source_path": "output-virtualbox-iso/packer-centos-6.5-64bit-v5-UDI.ovf",
+            "vboxmanage": [
+                ["modifyvm", "{{.Name}}", "--memory", "4096"],
+                ["modifyvm", "{{.Name}}", "--cpus", "2"]
+            ],
+            "vm_name": "packer-centos-6.5-64bit-UDI-v5",
+            "shutdown_command": "sudo shutdown -P now"
+        }
+    ],
+    "provisioners": [
+ 	 { 
+  			"type": "shell",
+  			"inline": ["svn checkout http://cumulusrdf.googlecode.com/svn/trunk /home/cumulus/cumulus-rdf-readonly"]
+	 },
+	 {
+  			"type": "shell",
+  			"inline": ["chown cumulus:users -R /home/cumulus/cumulus-rdf-readonly"]
+	 },
+	 {
+  			"type": "shell",
+  			"inline": ["chmod 777 /home/cumulus/cumulus-rdf-readonly/src/vm/bootstrap.sh"]
+	 },
+	 {
+  			"type": "shell",
+  			"inline": ["yum install mc -y"]
+	 },
+	 {
+  			"type": "shell",
+  			"inline": ["/home/cumulus/cumulus-rdf-readonly/src/vm/bootstrap.sh"]
+	 }	 	 
+	 ]	 
+}
+ 
+ 
+ 
+ 
