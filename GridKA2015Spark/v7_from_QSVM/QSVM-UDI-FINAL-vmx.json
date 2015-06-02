@@ -1,0 +1,49 @@
+{
+    "builders": [
+        {
+            "boot_wait": "5s",
+            "headless": false,
+            "ssh_password": "root",
+            "ssh_username": "root",
+            "ssh_wait_timeout": "30m",
+            "type": "vmware-vmx",
+            "source_path": "/Volumes/MyExternalDrive/VMstore/TEMPLATES/cloudera-quickstart-vm-5.4.0-0-vmware/cloudera-quickstart-vm-5.4.0-0-vmware.vmx",
+            "vm_name": "provQSVMv7",
+            "shutdown_command": "sudo shutdown -P now"
+        }
+    ],
+    "provisioners": [
+ 	 { 
+  			"type": "shell",
+  			"inline": ["svn checkout http://cumulusrdf.googlecode.com/svn/trunk /home/cumulus/cumulus-rdf-readonly"]
+	 },
+	 {
+  			"type": "shell",
+  			"inline": ["chown cumulus:users -R /home/cumulus/cumulus-rdf-readonly"]
+	 },
+	 {
+  			"type": "shell",
+  			"inline": ["chmod 777 /home/cumulus/cumulus-rdf-readonly/src/vm/bootstrap.sh"]
+	 },
+	 {
+  			"type": "shell",
+  			"inline": ["yum --nogpgcheck localinstall cloudera-cdh-5-0.x86_64.rpm"]
+	 },
+	 {
+  			"type": "shell",
+  			"inline": ["yum install hbase hbase-rest hbase-thrift"]
+	 },
+	 {
+  			"type": "shell",
+  			"inline": ["yum install mc -y"]
+	 },
+	 {
+  			"type": "shell",
+  			"inline": ["/home/cumulus/cumulus-rdf-readonly/src/vm/bootstrap.sh"]
+	 },	 
+	 { 
+  			"type": "shell",
+  			"inline": ["svn checkout https://github.com/kamir/Humulus /home/cumulus/humulus"]
+	 }	 	 
+	 ]	 
+}

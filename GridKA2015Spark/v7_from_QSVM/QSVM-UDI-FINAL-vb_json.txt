@@ -1,0 +1,52 @@
+{
+    "builders": [
+        {
+            "boot_wait": "5s",
+            "guest_additions_mode" : "disable",
+            "headless": false,
+            "ssh_password": "cloudera",
+            "ssh_username": "cloudera",
+            "ssh_port": 22,
+            "ssh_wait_timeout": "60m",
+            "type": "virtualbox-ovf",
+  			"source_path": "/Volumes/MyExternalDrive/VMstore/TEMPLATES/cloudera-quickstart-vm-5.4.0-0-virtualbox/cloudera-quickstart-vm-5.4.0-0-virtualbox.ovf",
+            "vboxmanage": [
+                ["modifyvm", "{{.Name}}", "--memory", "4096"],
+                ["modifyvm", "{{.Name}}", "--cpus", "2"]
+            ],            
+            "vm_name": "prov-QSVM-vb.v7.c",
+            "shutdown_command": "sudo shutdown -h now"
+        }
+    ],
+    "provisioners": [
+     {
+  			"type": "file",
+  			"source": "/Volumes/Macintosh HD/Users/kamir/Documents/Cloudera/github/DocWorld.PARCEL/target/TTFAQ-1.1.0-TTFAQ.jar",
+  			"destination": "/opt/cloudera/csd/TTFAQ-1.1.0-TTFAQ.jar"
+	 }, 	 
+	 { 
+  			"type": "shell",
+  			"inline": ["sudo service cloudera-scm-server restart"]
+	 },
+ 	 { 
+  			"type": "shell",
+  			"inline": ["sudo yum install svn -y"]
+	 },
+	 {
+  			"type": "shell",
+  			"inline": ["sudo mkdir /home/cloudera/cumulus"]
+	 },
+ 	 { 
+  			"type": "shell",
+  			"inline": ["sudo svn checkout http://cumulusrdf.googlecode.com/svn/trunk /home/cloudera/cumulus/cumulus-rdf-readonly"]
+	 },
+	 { 
+  			"type": "shell",
+  			"inline": ["sudo svn checkout https://github.com/kamir/Humulus /home/cloudera/cumulus/humulus"]
+	 },	 
+	 {
+  			"type": "shell",
+  			"inline": ["sudo chown cloudera:users -R /home/cloudera"]
+	 }	 	 
+	 ]	 
+}
